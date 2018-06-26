@@ -22,13 +22,11 @@ const styles = {
     elevation: 1,
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
-      },
-      android: {
-      }
+				shadowColor: '#000',
+				shadowOffset: {width: 0, height: 2},
+				shadowOpacity: 0.1,
+				shadowRadius: 2,
+			}
     })
 
   }
