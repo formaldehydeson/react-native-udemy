@@ -1,21 +1,36 @@
 import React, { Component } from 'react';
-import { Text, TouchableWithoutFeedback, View } from 'react-native';
+import {
+  Text,
+  TouchableWithoutFeedback,
+  View,
+  LayoutAnimation,
+	NativeModules
+} from 'react-native';
 import { connect } from 'react-redux';
 import { CardSection } from './common';
 import * as actions from '../actions';
+const { UIManager } = NativeModules;
+UIManager.setLayoutAnimationEnabledExperimental
+&& UIManager.setLayoutAnimationEnabledExperimental(true);
 
 class ListItem extends Component {
+  componentWillUpdate() {
+    LayoutAnimation.spring();
+  }
+
   renderDescription() {
-    const { library, selectedLibraryId } = this.props;
-    if (library.id === selectedLibraryId) {
+    const { library, expanded } = this.props;
+    if (expanded) {
       return (
-        <Text>{library.description}</Text>
+        <CardSection>
+          <Text style={{paddingLeft:15}}>{library.description}</Text>
+				</CardSection>
       );
     }
   }
 
   render() {
-    const { titleStyles } = styles;
+    const { titleStyle } = styles;
     const { title, id } = this.props.library;
 
     return (
@@ -24,7 +39,7 @@ class ListItem extends Component {
       >
         <View style={{flex: 1}}>
           <CardSection>
-            <Text style={titleStyles}>
+            <Text style={titleStyle}>
               {title}
             </Text>
           </CardSection>
@@ -35,15 +50,16 @@ class ListItem extends Component {
   }
 }
 
-const styles= {
+const styles = {
   titleStyle: {
     fontSize: 18,
     paddingLeft: 15
   }
 };
 
-const mapStateToProps = state => {
-  return { selectedLibraryId: state.selectedLibraryId}
+const mapStateToProps = (state, ownProps) => {
+  const expanded = state.selectedLibraryId === ownProps.library.id;
+  return { expanded };
 };
 
-export default connect(null, actions)(ListItem);
+export default connect(mapStateToProps, actions)(ListItem);
