@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux';
-import libraries from './LibraryReducer';
-import selectedLibraryId from './SelectionReducer';
+import auth from './AuthReducer';
 
 export default combineReducers({
-  libraries,
-  selectedLibraryId
+  auth
 });
